@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--Título da aba-->
+<title>Quiz</title>
+<style>
+body {
+font-family:arial, Verdana;
+text-align: center;
+margin-top: auto;
+
+}
+.quiz-container {
+max-width: 650px;
+margin:auto;
+text-align: center;
+}
+#pergunta {
+font-weight: bold;
+margin-bottom: 10px;
+text-align: center;
+}
+.opcao {
+display:inline-block;
+margin: 10px;
+}
+#resultado {
+margin-top: 20px;
+font-weight:lighter;
+}
+</style>
+</head>
+<body>
+<div class="quiz-container">
+<h1>Quiz</h1>
+<div id="pergunta"></div>
+<div id="opcoes" class="opcao"></div>
+<button onclick="verificarResposta()">Verificar Resposta</button>
+<div id="resultado"></div>
+</div>
+<script>
+const perguntas = [
+{
+pergunta: "Qual a ordem correta das estações do ano?",
+opcoes: ["a) Outono, Inverno, Verão e Primavera.", "b) Verão, Primavera, Inverno e Outono.", "c) Primavera, Verão, Outono e Inverno.", "d) Inverno, Outono, Primavera e Verão."],
+resposta: "c) Primavera, Verão, Outono e Inverno."
+},
+{
+pergunta: "Quanto é 2 + 2=?",
+opcoes: ["a) 2.", "b) 4.", "c) 5.", "d) 0."],
+resposta: "b) 4."
+},
+{
+pergunta: "Qual a duração do Crurso superior/técnico de ADS na Faculdade Municipal de Palhoça?",
+opcoes: ["a) Dois anos e meio.", "b) Quatro anos.", "c) Três anos e meio.", "d) Dois anos."],
+resposta: "a) Dois anos e meio."
+}
+];
+let perguntaAtual = 0;
+function carregarPergunta() {
+const perguntaElemento = document.getElementById("pergunta");
+const opcoesElemento = document.getElementById("opcoes");
+perguntaElemento.textContent = perguntas[perguntaAtual].pergunta;
+opcoesElemento.innerHTML = "";
+perguntas[perguntaAtual].opcoes.forEach(opcao => {
+const opcaoElemento = document.createElement("input");
+opcaoElemento.type = "radio";
+opcaoElemento.name = "opcao";
+opcaoElemento.value = opcao;
+opcaoElemento.classList.add("opcao");
+opcaoElemento.required = true;
+const labelElemento = document.createElement("label");
+labelElemento.textContent = opcao;
+opcoesElemento.appendChild(opcaoElemento);
+opcoesElemento.appendChild(labelElemento);
+});
+}
+function verificarResposta() {
+const opcoesSelecionadas =
+document.querySelectorAll('input[name="opcao"]:checked');
+if (opcoesSelecionadas.length === 0) {
+alert("Por favor, selecione uma opção.");
+return;
+}
+const respostaUsuario = opcoesSelecionadas[0].value;
+const respostaCorreta = perguntas[perguntaAtual].resposta;
+const resultadoElemento = document.getElementById("resultado");
+if (respostaUsuario === respostaCorreta) {
+resultadoElemento.textContent = "Resposta correta!";
+} else {
+resultadoElemento.textContent = `Resposta incorreta. A resposta correta é:
+${respostaCorreta}`;
+}
+perguntaAtual++;
+if (perguntaAtual < perguntas.length) {
+carregarPergunta();
+} else {
+resultadoElemento.textContent += " Fim do Jogo!";
+}
+}
+carregarPergunta();
+</script>
+</body>
+</html>
